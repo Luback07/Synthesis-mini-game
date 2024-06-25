@@ -1,13 +1,13 @@
-static int t_bg[4][4] = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};		//Æ½ÅÃÅä °ÔÀÓÆÇ
-int sel, x, y, rx, ry;																	// sel´Â ÇÃ·¹ÀÌ¾î Å° °ª ¹Ş´Â º¯¼ö 
-char ch;																				// ºóÄ­, O, X Ãâ·Â 
-static int count = 0;																	//¸î¹ø ¼ö¸¦ µ×´ÂÁö È®ÀÎ 
+static int t_bg[4][4] = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};		//í‹±íƒí†  ê²Œì„íŒ
+int sel, x, y, rx, ry;																	// selëŠ” í”Œë ˆì´ì–´ í‚¤ ê°’ ë°›ëŠ” ë³€ìˆ˜ 
+char ch;																				// ë¹ˆì¹¸, O, X ì¶œë ¥ 
+static int count = 0;																	//ëª‡ë²ˆ ìˆ˜ë¥¼ ë’€ëŠ”ì§€ í™•ì¸ 
 static int game_end;
 
 int game1_check_key() {
 	key = 0;
-	if(kbhit()){ //Å°ÀÔ·ÂÀÌ ÀÖ´Â °æ¿ì
-        key=getch(); //Å°°ªÀ» ¹ŞÀ½
+	if(kbhit()){ //í‚¤ì…ë ¥ì´ ìˆëŠ” ê²½ìš°
+        key=getch(); //í‚¤ê°’ì„ ë°›ìŒ
 	    switch (key) {
 	    	case 49:
 	    		return 31;
@@ -66,7 +66,8 @@ int t_reset(){
 	}
 }
 
-int p_s_t(){							// player O À§Ä¡ ¼±ÅÃ 
+int p_s_t(){							// player O ìœ„ì¹˜ ì„ íƒ 
+	int loc = 0;
 	while(game == 1){
 		sel = 0;
 		if(kbhit()){
@@ -74,11 +75,11 @@ int p_s_t(){							// player O À§Ä¡ ¼±ÅÃ
 			if(sel == 1000)
 			{
 				game = 0;
-				break;
+				return 0;
 			}
 			else if(sel == 100){
 				ttt();
-				break;
+				return 0;
 			}
 			else if(sel <= 33 && sel >= 11)
 			{
@@ -86,20 +87,25 @@ int p_s_t(){							// player O À§Ä¡ ¼±ÅÃ
 				sel -= y*10;
 				x = sel;
 				if(t_bg[y-1][x-1] == 0){
-				t_bg[y-1][x-1] = 1;
-				count += 1;
-				break;
+					t_bg[y-1][x-1] = 1;
+					count += 1;
+					if(loc > 0){
+						system("cls");
+					}
+					return 0;
 				}
 				else
 				{
-					printf("ÀÌ¹Ì ³õÀº ÀÚ¸®ÀÔ´Ï´Ù.\n");
+					gotoxy(3, 26+loc);
+					printf("ì´ë¯¸ ë†“ì€ ìë¦¬ì…ë‹ˆë‹¤.\n");
+					loc += 1;
 				}
 			}
 		}
 	}
 }
 
-int r_s_t(){							// X¼³Ä¡ 
+int r_s_t(){							// Xì„¤ì¹˜ 
 	while(game == 1){
 		if(count >= 9){
 			break;
@@ -114,8 +120,8 @@ int r_s_t(){							// X¼³Ä¡
 	}
 }
 
-int t_check(){							// ÇÑ ÁÙ‰ç´ÂÁö È®ÀÎ 
-	for(int j = 0; j < 3; j++){			//¼¼·Î È®ÀÎ 
+int t_check(){							// í•œ ì¤„ë¬ëŠ”ì§€ í™•ì¸ 
+	for(int j = 0; j < 3; j++){			//ì„¸ë¡œ í™•ì¸ 
 		for(int i = 0; i < 2; i++){
 			if(t_bg[i][j] != t_bg[i+1][j]){
 				break;
@@ -125,32 +131,28 @@ int t_check(){							// ÇÑ ÁÙ‰ç´ÂÁö È®ÀÎ
 					if(t_bg[i][j] == 1){
 						count += 10;
 						t_print();
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ±ÛÀÚ »¡°£»ö ÁöÁ¤ 
-						printf("  _____  _           __     ________ _____   __          _______ _   _ \n"
-								" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  \\ \\        / /_   _| \\ | |\n"
-								" | |__) | |       /  \\\\ \\_/ /| |__  | |__) |  \\ \\  /\\  / /  | | |  \\| |\n"
-								" |  ___/| |      / /\\ \\\\   / |  __| |  _  /    \\ \\/  \\/ /   | | | . ` |\n"
-								" | |    | |____ / ____ \\| |  | |____| | \\ \\     \\  /\\  /   _| |_| |\\  |\n"
-								" |_|    |______/_/    \\_\\_|  |______|_|  \\_\\     \\/  \\/   |_____|_| \\_|\n"
-        						"		                                                               \n"
-             					"			                                                          ");
-             					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ê¸€ì ë¹¨ê°„ìƒ‰ ì§€ì • 
+						gotoxy(3, 26); printf("  _____  _           __     ________ _____   __          _______ _   _ \n");
+						gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  \\ \\        / /_   _| \\ | |\n");
+						gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) |  \\ \\  /\\  / /  | | |  \\| |\n");
+						gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /    \\ \\/  \\/ /   | | | . ` |\n");
+						gotoxy(3, 30); printf(" | |    | |____ / ____ \\| |  | |____| | \\ \\     \\  /\\  /   _| |_| |\\  |\n");
+						gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\_|  |______|_|  \\_\\     \\/  \\/   |_____|_| \\_|\n");
+             			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ì ê¸°ë³¸ìƒ‰ ì§€ì • 
 						game_end = 1;
 						break;
 					}
 					else if(t_bg[i][j] == 2){
 						count += 10;
 						t_print();
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 13); // ±ÛÀÚ »¡°£»ö ÁöÁ¤ 
-						printf("  _____  _           __     ________ _____    _____  ______ ______ ______       _______ \n"
-							" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  |  __ \\|  ____|  ____|  ____|   /\\|__   __|\n"
-							" | |__) | |       /  \\\\ \\_/ /| |__  | |__) | | |  | | |__  | |__  | |__     /  \\  | |   \n"
-							" |  ___/| |      / /\\ \\\\   / |  __| |  _  /  | |  | |  __| |  __| |  __|   / /\\ \\ | |   \n"
-							" | |    | |____ / ____ \\\| |  | |____| | \\ \\  | |__| | |____| |    | |____ / ____ \\| |   \n"
-							" |_|    |______/_/    \\_\\\_|  |______|_|  \\_\\ |_____/|______|_|    |______/_/    \\_\\_|   \n"
-							"                                                                                        \n"
-							"                                                                                        ");
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 13); // ê¸€ì ë¹¨ê°„ìƒ‰ ì§€ì • 
+						gotoxy(3, 26); printf("  _____  _           __     ________ _____    _____  ______ ______ ______       _______ \n");
+						gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  |  __ \\|  ____|  ____|  ____|   /\\|__   __|\n");
+						gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) | | |  | | |__  | |__  | |__     /  \\  | |   \n");
+						gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /  | |  | |  __| |  __| |  __|   / /\\ \\ | |   \n");
+						gotoxy(3, 30); printf(" | |    | |____ / ____ \\\| |  | |____| | \\ \\  | |__| | |____| |    | |____ / ____ \\| |   \n");
+						gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\\_|  |______|_|  \\_\\ |_____/|______|_|    |______/_/    \\_\\_|   \n");
+						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ì ê¸°ë³¸ìƒ‰ ì§€ì • 
 						game_end = 1;
 						break;
 					}
@@ -158,7 +160,7 @@ int t_check(){							// ÇÑ ÁÙ‰ç´ÂÁö È®ÀÎ
 			}
 		}
 	}
-	for(int i = 0; i < 3; i++){			//°¡·Î È®ÀÎ 
+	for(int i = 0; i < 3; i++){			//ê°€ë¡œ í™•ì¸ 
 		for(int j = 0; j < 2; j++){
 			if(t_bg[i][j] != t_bg[i][j+1]){
 				break;
@@ -168,32 +170,28 @@ int t_check(){							// ÇÑ ÁÙ‰ç´ÂÁö È®ÀÎ
 					if(t_bg[i][j] == 1){
 						count += 10;
 						t_print();
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ±ÛÀÚ »¡°£»ö ÁöÁ¤ 
-						printf("  _____  _           __     ________ _____   __          _______ _   _ \n"
-								" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  \\ \\        / /_   _| \\ | |\n"
-								" | |__) | |       /  \\\\ \\_/ /| |__  | |__) |  \\ \\  /\\  / /  | | |  \\| |\n"
-								" |  ___/| |      / /\\ \\\\   / |  __| |  _  /    \\ \\/  \\/ /   | | | . ` |\n"
-								" | |    | |____ / ____ \\| |  | |____| | \\ \\     \\  /\\  /   _| |_| |\\  |\n"
-								" |_|    |______/_/    \\_\\_|  |______|_|  \\_\\     \\/  \\/   |_____|_| \\_|\n"
-        						"		                                                               \n"
-             					"			                                                          ");
-             					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ê¸€ì ë¹¨ê°„ìƒ‰ ì§€ì • 
+						gotoxy(3, 26); printf("  _____  _           __     ________ _____   __          _______ _   _ \n");
+						gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  \\ \\        / /_   _| \\ | |\n");
+						gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) |  \\ \\  /\\  / /  | | |  \\| |\n");
+						gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /    \\ \\/  \\/ /   | | | . ` |\n");
+						gotoxy(3, 30); printf(" | |    | |____ / ____ \\| |  | |____| | \\ \\     \\  /\\  /   _| |_| |\\  |\n");
+						gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\_|  |______|_|  \\_\\     \\/  \\/   |_____|_| \\_|\n");
+             			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ì ê¸°ë³¸ìƒ‰ ì§€ì • 
 						game_end = 1;
 						break;
 					}
 					else if(t_bg[i][j] == 2){
 						count += 10;
 						t_print();
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ±ÛÀÚ »¡°£»ö ÁöÁ¤ 
-						printf("  _____  _           __     ________ _____    _____  ______ ______ ______       _______ \n"
-							" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  |  __ \\|  ____|  ____|  ____|   /\\|__   __|\n"
-							" | |__) | |       /  \\\\ \\_/ /| |__  | |__) | | |  | | |__  | |__  | |__     /  \\  | |   \n"
-							" |  ___/| |      / /\\ \\\\   / |  __| |  _  /  | |  | |  __| |  __| |  __|   / /\\ \\ | |   \n"
-							" | |    | |____ / ____ \\\| |  | |____| | \\ \\  | |__| | |____| |    | |____ / ____ \\| |   \n"
-							" |_|    |______/_/    \\_\\\_|  |______|_|  \\_\\ |_____/|______|_|    |______/_/    \\_\\_|   \n"
-							"                                                                                        \n"
-							"                                                                                        ");
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ê¸€ì ë¹¨ê°„ìƒ‰ ì§€ì • 
+						gotoxy(3, 26); printf("  _____  _           __     ________ _____    _____  ______ ______ ______       _______ \n");
+						gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  |  __ \\|  ____|  ____|  ____|   /\\|__   __|\n");
+						gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) | | |  | | |__  | |__  | |__     /  \\  | |   \n");
+						gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /  | |  | |  __| |  __| |  __|   / /\\ \\ | |   \n");
+						gotoxy(3, 30); printf(" | |    | |____ / ____ \\\| |  | |____| | \\ \\  | |__| | |____| |    | |____ / ____ \\| |   \n");
+						gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\\_|  |______|_|  \\_\\ |_____/|______|_|    |______/_/    \\_\\_|   \n");
+						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ì ê¸°ë³¸ìƒ‰ ì§€ì • 
 						game_end = 1;
 						break;
 					}
@@ -210,32 +208,28 @@ int t_check(){							// ÇÑ ÁÙ‰ç´ÂÁö È®ÀÎ
 				if(t_bg[i][i] == 1){
 					count += 10;
 					t_print();
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ±ÛÀÚ »¡°£»ö ÁöÁ¤ 
-						printf("  _____  _           __     ________ _____   __          _______ _   _ \n"
-								" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  \\ \\        / /_   _| \\ | |\n"
-								" | |__) | |       /  \\\\ \\_/ /| |__  | |__) |  \\ \\  /\\  / /  | | |  \\| |\n"
-								" |  ___/| |      / /\\ \\\\   / |  __| |  _  /    \\ \\/  \\/ /   | | | . ` |\n"
-								" | |    | |____ / ____ \\| |  | |____| | \\ \\     \\  /\\  /   _| |_| |\\  |\n"
-								" |_|    |______/_/    \\_\\_|  |______|_|  \\_\\     \\/  \\/   |_____|_| \\_|\n"
-        						"		                                                               \n"
-             					"			                                                          ");
-             					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ê¸€ì ë¹¨ê°„ìƒ‰ ì§€ì • 
+					gotoxy(3, 26); printf("  _____  _           __     ________ _____   __          _______ _   _ \n");
+					gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  \\ \\        / /_   _| \\ | |\n");
+					gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) |  \\ \\  /\\  / /  | | |  \\| |\n");
+					gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /    \\ \\/  \\/ /   | | | . ` |\n");
+					gotoxy(3, 30); printf(" | |    | |____ / ____ \\| |  | |____| | \\ \\     \\  /\\  /   _| |_| |\\  |\n");
+					gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\_|  |______|_|  \\_\\     \\/  \\/   |_____|_| \\_|\n");
+             		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ì ê¸°ë³¸ìƒ‰ ì§€ì • 
 					game_end = 10;
 					break;
 				}
 				else if(t_bg[i][i] == 2){
 					count += 10;
 					t_print();
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ±ÛÀÚ »¡°£»ö ÁöÁ¤ 
-					printf("  _____  _           __     ________ _____    _____  ______ ______ ______       _______ \n"
-							" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  |  __ \\|  ____|  ____|  ____|   /\\|__   __|\n"
-							" | |__) | |       /  \\\\ \\_/ /| |__  | |__) | | |  | | |__  | |__  | |__     /  \\  | |   \n"
-							" |  ___/| |      / /\\ \\\\   / |  __| |  _  /  | |  | |  __| |  __| |  __|   / /\\ \\ | |   \n"
-							" | |    | |____ / ____ \\\| |  | |____| | \\ \\  | |__| | |____| |    | |____ / ____ \\| |   \n"
-							" |_|    |______/_/    \\_\\\_|  |______|_|  \\_\\ |_____/|______|_|    |______/_/    \\_\\_|   \n"
-							"                                                                                        \n"
-							"                                                                                        ");
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ê¸€ì ë¹¨ê°„ìƒ‰ ì§€ì • 
+					gotoxy(3, 26); printf("  _____  _           __     ________ _____    _____  ______ ______ ______       _______ \n");
+					gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  |  __ \\|  ____|  ____|  ____|   /\\|__   __|\n");
+					gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) | | |  | | |__  | |__  | |__     /  \\  | |   \n");
+					gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /  | |  | |  __| |  __| |  __|   / /\\ \\ | |   \n");
+					gotoxy(3, 30); printf(" | |    | |____ / ____ \\\| |  | |____| | \\ \\  | |__| | |____| |    | |____ / ____ \\| |   \n");
+					gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\\_|  |______|_|  \\_\\ |_____/|______|_|    |______/_/    \\_\\_|   \n");
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ì ê¸°ë³¸ìƒ‰ ì§€ì • 
 					game_end = 10;
 					break;
 				}
@@ -251,32 +245,28 @@ int t_check(){							// ÇÑ ÁÙ‰ç´ÂÁö È®ÀÎ
 				if(t_bg[2-i][i] == 1){
 					count += 10;
 					t_print();
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ±ÛÀÚ »¡°£»ö ÁöÁ¤ 
-						printf("  _____  _           __     ________ _____   __          _______ _   _ \n"
-								" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  \\ \\        / /_   _| \\ | |\n"
-								" | |__) | |       /  \\\\ \\_/ /| |__  | |__) |  \\ \\  /\\  / /  | | |  \\| |\n"
-								" |  ___/| |      / /\\ \\\\   / |  __| |  _  /    \\ \\/  \\/ /   | | | . ` |\n"
-								" | |    | |____ / ____ \\| |  | |____| | \\ \\     \\  /\\  /   _| |_| |\\  |\n"
-								" |_|    |______/_/    \\_\\_|  |______|_|  \\_\\     \\/  \\/   |_____|_| \\_|\n"
-        						"		                                                               \n"
-             					"			                                                          ");
-             					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ê¸€ì ë¹¨ê°„ìƒ‰ ì§€ì • 
+					gotoxy(3, 26); printf("  _____  _           __     ________ _____   __          _______ _   _ \n");
+					gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  \\ \\        / /_   _| \\ | |\n");
+					gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) |  \\ \\  /\\  / /  | | |  \\| |\n");
+					gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /    \\ \\/  \\/ /   | | | . ` |\n");
+					gotoxy(3, 30); printf(" | |    | |____ / ____ \\| |  | |____| | \\ \\     \\  /\\  /   _| |_| |\\  |\n");
+					gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\_|  |______|_|  \\_\\     \\/  \\/   |_____|_| \\_|\n");
+             		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ì ê¸°ë³¸ìƒ‰ ì§€ì • 
 					game_end = 1;
 					break;
 				}
 				else if(t_bg[2-i][i] == 2){
 					count += 10;
 					t_print();
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ±ÛÀÚ »¡°£»ö ÁöÁ¤
-					printf("  _____  _           __     ________ _____    _____  ______ ______ ______       _______ \n"
-							" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  |  __ \\|  ____|  ____|  ____|   /\\|__   __|\n"
-							" | |__) | |       /  \\\\ \\_/ /| |__  | |__) | | |  | | |__  | |__  | |__     /  \\  | |   \n"
-							" |  ___/| |      / /\\ \\\\   / |  __| |  _  /  | |  | |  __| |  __| |  __|   / /\\ \\ | |   \n"
-							" | |    | |____ / ____ \\\| |  | |____| | \\ \\  | |__| | |____| |    | |____ / ____ \\| |   \n"
-							" |_|    |______/_/    \\_\\\_|  |______|_|  \\_\\ |_____/|______|_|    |______/_/    \\_\\_|   \n"
-							"                                                                                        \n"
-							"                                                                                        ");
-							SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ê¸€ì ë¹¨ê°„ìƒ‰ ì§€ì •
+					gotoxy(3, 26); printf("  _____  _           __     ________ _____    _____  ______ ______ ______       _______ \n");
+					gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  |  __ \\|  ____|  ____|  ____|   /\\|__   __|\n");
+					gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) | | |  | | |__  | |__  | |__     /  \\  | |   \n");
+					gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /  | |  | |  __| |  __| |  __|   / /\\ \\ | |   \n");
+					gotoxy(3, 30); printf(" | |    | |____ / ____ \\\| |  | |____| | \\ \\  | |__| | |____| |    | |____ / ____ \\| |   \n");
+					gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\\_|  |______|_|  \\_\\ |_____/|______|_|    |______/_/    \\_\\_|   \n");
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ì ê¸°ë³¸ìƒ‰ ì§€ì • 
 					game_end = 1;
 					break;
 				}
@@ -285,37 +275,124 @@ int t_check(){							// ÇÑ ÁÙ‰ç´ÂÁö È®ÀÎ
 	}
 }
 
-int t_print(){							// Æ½ÅÃÅä È­¸é Ãâ·Â 
-	system("cls");
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ Èò»ö ÁöÁ¤ 
-	printf("    0 1 2\n");
-	printf("   ------\n");
+int t_print(){							// í‹±íƒí†  í™”ë©´ ì¶œë ¥ 
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ì í°ìƒ‰ ì§€ì • 
+	for(int i = 0; i < 4; i++){
+		gotoxy(3, 3+7*i); printf("â–© â–© â–© â–© â–© â–© â–© â–© â–© â–© â–© â–© â–© â–© â–© â–© â–© â–© â–© â–© â–© â–©");
+		if(i < 3){
+			for(int j = 1; j < 8; j++){
+				gotoxy(3, 3+7*i+j); printf("â–©             â–©             â–©             â–©");
+			}
+		}
+	}
 	for(int i = 0; i < 3; i++){
-		printf("%d |", i);
 		for(int j = 0; j < 3; j++){
 			if(t_bg[i][j] == 0)
 			{
-				ch = ' ';
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ê¸€ì íšŒìƒ‰ ì§€ì •
+				if(i == 0){
+					if(j == 0){
+						gotoxy(4, 5); printf("  â–  â–  â–  â– ");
+						gotoxy(4, 6); printf("        â– ");
+						gotoxy(4, 7); printf("        â– ");
+						gotoxy(4, 8); printf("        â– ");
+						gotoxy(4, 9); printf("        â– ");
+					}
+					else if(j == 1){
+						gotoxy(11, 5); printf("  â–  â–  â–  â– ");
+						gotoxy(11, 6); printf("  â–      â– ");
+						gotoxy(11, 7); printf("  â–  â–  â–  â– ");
+						gotoxy(11, 8); printf("  â–      â– ");
+						gotoxy(11, 9); printf("  â–  â–  â–  â– ");
+					}
+					else if(j == 2){
+						gotoxy(18, 5); printf("  â–  â–  â–  â– ");
+						gotoxy(18, 6); printf("  â–      â– ");
+						gotoxy(18, 7); printf("  â–  â–  â–  â– ");
+						gotoxy(18, 8); printf("        â– ");
+						gotoxy(18, 9); printf("        â– ");
+					}
+				}
+				else if(i == 1){
+					if(j == 0){
+						gotoxy(4, 12); printf("        â– ");
+						gotoxy(4, 13); printf("      â–  â– ");
+						gotoxy(4, 14); printf("    â–    â– ");
+						gotoxy(4, 15); printf("  â–  â–  â–  â– ");
+						gotoxy(4, 16); printf("        â– ");
+					}
+					else if(j == 1){
+						gotoxy(11, 12); printf("  â–  â–  â–  â– ");
+						gotoxy(11, 13); printf("  â– ");
+						gotoxy(11, 14); printf("  â–  â–  â–  â– ");
+						gotoxy(11, 15); printf("        â– ");
+						gotoxy(11, 16); printf("  â–  â–  â–  â– ");
+					}
+					else if(j == 2){
+						gotoxy(18, 12); printf("  â–  â–  â–  â– ");
+						gotoxy(18, 13); printf("  â– ");
+						gotoxy(18, 14); printf("  â–  â–  â–  â– ");
+						gotoxy(18, 15); printf("  â–      â– ");
+						gotoxy(18, 16); printf("  â–  â–  â–  â– ");
+					}
+				}
+				else if(i == 2){
+					if(j == 0){
+						gotoxy(4, 19); printf("      â– ");
+						gotoxy(4, 20); printf("    â–  â– ");
+						gotoxy(4, 21); printf("      â– ");
+						gotoxy(4, 22); printf("      â– ");
+						gotoxy(4, 23); printf("   â–  â–  â– ");
+					}
+					else if(j == 1){
+						gotoxy(11, 19); printf("  â–  â–  â–  â– ");
+						gotoxy(11, 20); printf("        â– ");
+						gotoxy(11, 21); printf("  â–  â–  â–  â– ");
+						gotoxy(11, 22); printf("  â– ");
+						gotoxy(11, 23); printf("  â–  â–  â–  â– ");
+					}
+					else if(j == 2){
+						gotoxy(18, 19); printf("  â–  â–  â–  â– ");
+						gotoxy(18, 20); printf("        â– ");
+						gotoxy(18, 21); printf("  â–  â–  â–  â– ");
+						gotoxy(18, 22); printf("        â– ");
+						gotoxy(18, 23); printf("  â–  â–  â–  â– ");
+					}
+				}
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ì í°ìƒ‰ ì§€ì •
 			}
 			else if(t_bg[i][j] == 1)
 			{
-				ch = 'O';
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // ê¸€ì ì—°ë‘ìƒ‰ ì§€ì • 
+				gotoxy(4+7*j, 4+7*i); printf("  â–  â–  â–  â– ");
+				gotoxy(4+7*j, 4+7*i+1); printf("â–          â– ");
+				gotoxy(4+7*j, 4+7*i+2); printf("â–          â– ");
+				gotoxy(4+7*j, 4+7*i+3); printf("â–          â– ");
+				gotoxy(4+7*j, 4+7*i+4); printf("â–          â– ");
+				gotoxy(4+7*j, 4+7*i+5); printf("  â–  â–  â–  â– ");
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ì í°ìƒ‰ ì§€ì • 
 			}
 			else if(t_bg[i][j] == 2)
 			{
-				ch = 'X';
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4); // ê¸€ì ë…¸ë€ìƒ‰ ì§€ì • 
+				gotoxy(4+7*j, 4+7*i); printf("â–          â– ");
+				gotoxy(4+7*j, 4+7*i+1); printf("  â–      â– ");
+				gotoxy(4+7*j, 4+7*i+2); printf("    â–  â– ");
+				gotoxy(4+7*j, 4+7*i+3); printf("    â–  â– ");
+				gotoxy(4+7*j, 4+7*i+4); printf("  â–      â– ");
+				gotoxy(4+7*j, 4+7*i+5); printf("â–          â– ");
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ì í°ìƒ‰ ì§€ì • 
 			}
-			printf(" %c", ch);
 		}
-		printf("\n");
 	}
 	if(count == 9){
-		printf("¹«½ÂºÎÀÓ ´Ô ¹Ùº¸ÀÓ?");
+		printf("ë¬´ìŠ¹ë¶€ì„ ë‹˜ ë°”ë³´ì„?");
 	}
 }
 
 int ttt(){
-	SetConsoleTitle("Æ½ÅÃÅä");			//ÄÜ¼Ö Á¦¸ñ º¯°æ
+	SetConsoleTitle("í‹±íƒí† ");			//ì½˜ì†” ì œëª© ë³€ê²½
+	system("cls");
 	count = 0;
 	game_end = 0;
 	for(int i = 0; i < 4; i++)
