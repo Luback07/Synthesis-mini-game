@@ -1,21 +1,21 @@
 void CursorView()
 {
-    CONSOLE_CURSOR_INFO cursorInfo = { 0, };
-    cursorInfo.dwSize = 1; //Ä¿¼­ ±½±â (1 ~ 100)
-    cursorInfo.bVisible = FALSE; //Ä¿¼­ Visible TRUE(º¸ÀÓ) FALSE(¼û±è)
+    CONSOLE_CURSOR_INFO cursorInfo = { 0, };	// ì»¤ì„œ êµ¬ì¡°ì²´ ì„ ì–¸
+    cursorInfo.dwSize = 1; 			// ì»¤ì„œ êµµê¸° (1 ~ 100)
+    cursorInfo.bVisible = FALSE; 		// ì»¤ì„œ Visible TRUE(ë³´ìž„) FALSE(ìˆ¨ê¹€)
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
 
-void gotoxy(int x,int y) { //gotoxyÇÔ¼ö 
-    COORD pos={2*x, y};
+void gotoxy(int x,int y) { //gotoxyí•¨ìˆ˜ 
+    COORD pos={2*x, y};				// ì»¤ì„œ ìœ„ì¹˜ ì„ ì–¸
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
 }
 
 int game0_check_key() {
 	key = 0;
-	if(kbhit()){ //Å°ÀÔ·ÂÀÌ ÀÖ´Â °æ¿ì
-        key=getch(); //Å°°ªÀ» ¹ÞÀ½
-        if(key==224){ //¹æÇâÅ°ÀÎ°æ¿ì 
+	if(kbhit()){ //í‚¤ìž…ë ¥ì´ ìžˆëŠ” ê²½ìš°
+        key=getch(); //í‚¤ê°’ì„ ë°›ìŒ
+        if(key==224){ //ë°©í–¥í‚¤ì¸ê²½ìš° 
            	do{key=getch();} while(key==224);
        	    	    switch (key) {
            	    	case LEFT:
@@ -54,9 +54,9 @@ int game0_check_key() {
 
 int start(){
 	system("cls");
-	g_s = 1;								//°ÔÀÓ ¼±ÅÃ º¯¼ö 
-	SetConsoleTitle("½ÃÀÛÈ­¸é");			//ÄÜ¼Ö Á¦¸ñ º¯°æ
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+	g_s = 1;								//ê²Œìž„ ì„ íƒ ë³€ìˆ˜ 
+	SetConsoleTitle("ì‹œìž‘í™”ë©´");			//ì½˜ì†” ì œëª© ë³€ê²½
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
 	printf("  ______    ______   __       __  ________         ______   ________  __        ________   ______   ________ \n"
 " /      \\  /      \\ /  \\     /  |/        |       /      \\ /        |/  |      /        | /      \\ /        |\n"
 "/$$$$$$  |/$$$$$$  |$$  \\   /$$ |$$$$$$$$/       /$$$$$$  |$$$$$$$$/ $$ |      $$$$$$$$/ /$$$$$$  |$$$$$$$$/ \n"
@@ -66,17 +66,17 @@ int start(){
 "$$ \\__$$ |$$ |  $$ |$$ |$$$/ $$ |$$ |_____       /  \\__$$ |$$ |_____ $$ |_____ $$ |_____ $$ \\__/  |   $$ |   \n"
 "$$    $$/ $$ |  $$ |$$ | $/  $$ |$$       |      $$    $$/ $$       |$$       |$$       |$$    $$/    $$ |   \n"
 " $$$$$$/  $$/   $$/ $$/      $$/ $$$$$$$$/        $$$$$$/  $$$$$$$$/ $$$$$$$$/ $$$$$$$$/  $$$$$$/     $$/    \n"
-"\n\n\n");		//Ãâ·Â  	
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ Èò»ö ÁöÁ¤ 
-	printf("> Æ½ÅÃÅä ");
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
-	printf("- ÇÇÇÏ±â °ÔÀÓ ");
+"\n\n\n");		//ì¶œë ¥  	
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ìž í°ìƒ‰ ì§€ì • 
+	printf("> í‹±íƒí†  ");
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
+	printf("- í”¼í•˜ê¸° ê²Œìž„ ");
 	printf("- ??? ");
-	 while(game == 0)					//Ã¹¹øÂ° È­¸éÀÏ ¶§ ½ÇÇà 
+	 while(game == 0)					//ì²«ë²ˆì§¸ í™”ë©´ì¼ ë•Œ ì‹¤í–‰ 
 	 {	
 	 	if(kbhit()){
 	    	system("cls");
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ Èò»ö ÁöÁ¤ 
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ìž í°ìƒ‰ ì§€ì • 
 		    printf("  ______    ______   __       __  ________         ______   ________  __        ________   ______   ________ \n"
 " /      \\  /      \\ /  \\     /  |/        |       /      \\ /        |/  |      /        | /      \\ /        |\n"
 "/$$$$$$  |/$$$$$$  |$$  \\   /$$ |$$$$$$$$/       /$$$$$$  |$$$$$$$$/ $$ |      $$$$$$$$/ /$$$$$$  |$$$$$$$$/ \n"
@@ -86,7 +86,7 @@ int start(){
 "$$ \\__$$ |$$ |  $$ |$$ |$$$/ $$ |$$ |_____       /  \\__$$ |$$ |_____ $$ |_____ $$ |_____ $$ \\__/  |   $$ |   \n"
 "$$    $$/ $$ |  $$ |$$ | $/  $$ |$$       |      $$    $$/ $$       |$$       |$$       |$$    $$/    $$ |   \n"
 " $$$$$$/  $$/   $$/ $$/      $$/ $$$$$$$$/        $$$$$$/  $$$$$$$$/ $$$$$$$$/ $$$$$$$$/  $$$$$$/     $$/    \n"
-"\n\n\n");		//Ãâ·Â  	
+"\n\n\n");		//ì¶œë ¥  	
 		    
 		    g_s += game0_check_key();
 			if(g_s > 100 && g_s < 110)
@@ -105,27 +105,27 @@ int start(){
 						
 		 	switch(g_s){
 		 		case ticktacktoe:
-	 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ Èò»ö ÁöÁ¤ 
-					printf("> Æ½ÅÃÅä ");
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
-					printf("- ÇÇÇÏ±â °ÔÀÓ ");
+	 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ìž í°ìƒ‰ ì§€ì • 
+					printf("> í‹±íƒí†  ");
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
+					printf("- í”¼í•˜ê¸° ê²Œìž„ ");
 					printf("- ??? ");
 					break;
 				case avoidgame:
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
-					printf("- Æ½ÅÃÅä ");
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ Èò»ö ÁöÁ¤ 
-					printf("> ÇÇÇÏ±â °ÔÀÓ ");
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
+					printf("- í‹±íƒí†  ");
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ìž í°ìƒ‰ ì§€ì • 
+					printf("> í”¼í•˜ê¸° ê²Œìž„ ");
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
 					printf("- ??? ");
 					break;
 				case secret: 
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
-					printf("- Æ½ÅÃÅä ");
-					printf("- ÇÇÇÏ±â °ÔÀÓ ");
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ Èò»ö ÁöÁ¤ 
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
+					printf("- í‹±íƒí†  ");
+					printf("- í”¼í•˜ê¸° ê²Œìž„ ");
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ìž í°ìƒ‰ ì§€ì • 
 					printf("> ??? ");
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
 					break;
 				}
 		}
@@ -135,20 +135,20 @@ int start(){
 int exit(){
 	ex = 2;
 	system("cls");
-	SetConsoleTitle("°ÔÀÓ Á¾·á");			//ÄÜ¼Ö Á¦¸ñ º¯°æ
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
-	printf("°ÔÀÓÀ» Á¾·áÇÏ½Ã°Ú½À´Ï±î?\n\n\n");
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+	SetConsoleTitle("ê²Œìž„ ì¢…ë£Œ");			//ì½˜ì†” ì œëª© ë³€ê²½
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
+	printf("ê²Œìž„ì„ ì¢…ë£Œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?\n\n\n");
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
 	printf("YES");
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
 	printf("      NO");
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
 	while(game == -1)
 	{
 		if(kbhit()){
 			system("cls");
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
-		    printf("°ÔÀÓÀ» Á¾·áÇÏ½Ã°Ú½À´Ï±î?\n\n\n");		//Ãâ·Â
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
+		    printf("ê²Œìž„ì„ ì¢…ë£Œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?\n\n\n");		//ì¶œë ¥
  
 		    ex += game0_check_key();
 			if(ex >= 100 && ex <= 103)
@@ -162,15 +162,15 @@ int exit(){
 			else if(ex == 3) ex = 1;		
 		 	switch(ex){
 		 		case 1:
-	 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ Èò»ö ÁöÁ¤ 
+	 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ìž í°ìƒ‰ ì§€ì • 
 					printf("YES");
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
 					printf("      NO");
 					break;
 				case 2:
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ±ÛÀÚ Èò»ö ÁöÁ¤ 
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // ê¸€ìž í°ìƒ‰ ì§€ì • 
 					printf("YES");
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
 					printf("      NO");
 					break;
 				}
