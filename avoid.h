@@ -1,15 +1,18 @@
 static int avoid_bg[avoid_BG_Y][avoid_BG_X];
 static int avoid_bg_cpy[avoid_BG_Y][avoid_BG_X];
-int point;							// Á¡¼ö 
-int avoid_speed;					// ³»·Á¿À´Â ¼Óµµ 
-static int avoid_key;				// ÀÔ·Â¹ÞÀº Å°
-static int p_l_a;					// ÇÃ·¹ÀÌ¾î À§Ä¡ 
-int level;							// °ÔÀÓ ·¹º§ 
-int spawn;							// ÃÑ¾Ë ½ºÆù 
-int spawn_speed;					// ÃÑ¾Ë ¼ÒÈ¯µÇ´Â ¼Óµµ ¹× ¶³¾îÁö´Â ¼Óµµ 
-int spawn_num;						// ¼ÒÈ¯µÉ ÃÑ¾Ë °¹¼ö 
+int point;							// ì ìˆ˜ 
+int avoid_speed;					// ë‚´ë ¤ì˜¤ëŠ” ì†ë„ 
+static int avoid_key;				// ìž…ë ¥ë°›ì€ í‚¤
+static int p_l_a;					// í”Œë ˆì´ì–´ ìœ„ì¹˜ 
+int level;							// ê²Œìž„ ë ˆë²¨ 
+int spawn;							// ì´ì•Œ ìŠ¤í° 
+int spawn_speed;					// ì´ì•Œ ì†Œí™˜ë˜ëŠ” ì†ë„ ë° ë–¨ì–´ì§€ëŠ” ì†ë„ 
+int spawn_num;						// ì†Œí™˜ë  ì´ì•Œ ê°¯ìˆ˜ 
+static int now_score;				// í˜„ìž¬ ì ìˆ˜ 
+static int last_score;				// ì´ì „ ì ìˆ˜ 
+static int best_score;				// ìµœê³  ì ìˆ˜ 
 
-int player_move_avoid(){									// ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ 
+int player_move_avoid(){									// í”Œë ˆì´ì–´ ì›€ì§ìž„ 
 	if(avoid_key == 1){
 		if(p_l_a >= 1 && p_l_a <= avoid_BG_X-3){
 			if(avoid_bg[avoid_BG_Y-2][p_l_a+1] != 0){
@@ -57,7 +60,7 @@ int player_move_avoid(){									// ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ
 	}
 }
 
-int bullet_spawn(){								// ÃÑ¾Ë »ý¼º ÇÔ¼ö 
+int bullet_spawn(){								// ì´ì•Œ ìƒì„± í•¨ìˆ˜ 
 	if(level == 1){
 		spawn_num = rand()%3+5;
 		for(int i = 0; i < spawn_num; i++){
@@ -70,7 +73,7 @@ int bullet_spawn(){								// ÃÑ¾Ë »ý¼º ÇÔ¼ö
 	}
 }
 
-int bullet_fallen(){							// ÃÑ¾Ë ³«ÇÏ ÇÔ¼ö 
+int bullet_fallen(){							// ì´ì•Œ ë‚™í•˜ í•¨ìˆ˜ 
 	for(int i = avoid_BG_Y; i > 0; i--){
 		for(int j = 0; j < avoid_BG_X; j++){
 			if(avoid_bg[i-1][j] == -1){
@@ -89,7 +92,7 @@ int bullet_fallen(){							// ÃÑ¾Ë ³«ÇÏ ÇÔ¼ö
 	}
 }
 
-int avoid_over(){								// °ÔÀÓ ¿À¹ö ÇÔ¼ö 
+int avoid_over(){								// ê²Œìž„ ì˜¤ë²„ í•¨ìˆ˜ 
 	gotoxy(0, 26);
 	printf("GAME OVER");
 	while(game == 2){
@@ -107,9 +110,9 @@ int avoid_over(){								// °ÔÀÓ ¿À¹ö ÇÔ¼ö
 
 int game2_check_key(){
 	key = 0;
-	if(kbhit()){ 								//Å°ÀÔ·ÂÀÌ ÀÖ´Â °æ¿ì
-        key=getch(); 							//Å°°ªÀ» ¹ÞÀ½
-        if(key==224){ 							//¹æÇâÅ°ÀÎ°æ¿ì 
+	if(kbhit()){ 								//í‚¤ìž…ë ¥ì´ ìžˆëŠ” ê²½ìš°
+        key=getch(); 							//í‚¤ê°’ì„ ë°›ìŒ
+        if(key==224){ 							//ë°©í–¥í‚¤ì¸ê²½ìš° 
            	do{key=getch();} while(key==224);
        	    	    switch (key) {
            	    	case LEFT:
@@ -145,27 +148,26 @@ int game2_check_key(){
 
 int avoid_reset(){
 	system("cls");
-	avoid_speed = 40;						// ±âº» ¼Óµµ 
-	p_l_a = avoid_BG_X/2+1;								// ÇÃ·¹ÀÌ¾î À§Ä¡ ÁöÁ¤ 
+	avoid_speed = 40;						// ê¸°ë³¸ ì†ë„ 
+	p_l_a = avoid_BG_X/2+1;								// í”Œë ˆì´ì–´ ìœ„ì¹˜ ì§€ì • 
 	level = 1;
-	for(int i = 0; i < avoid_BG_Y; i++){			//¹è°æ ÃÊ±âÈ­ 
+	for(int i = 0; i < avoid_BG_Y; i++){			//ë°°ê²½ ì´ˆê¸°í™” 
 		for(int j = 0; j < avoid_BG_X; j++){
 			avoid_bg[i][j] = 0;
 			avoid_bg_cpy[i][j] = 100;
 		}
-	}										// È­¸é ¾çÂÊ º® ÁöÁ¤ 
+	}										// í™”ë©´ ì–‘ìª½ ë²½ ì§€ì • 
 	for(int i = 0; i < avoid_BG_Y; i++){
 		avoid_bg[i][0] = 1;
 		avoid_bg[i][avoid_BG_X-1] = 1;
 	}
-	for(int i = 0; i < avoid_BG_X; i++){	// È­¸é ¹Ø º® ÁöÁ¤ 
+	for(int i = 0; i < avoid_BG_X; i++){	// í™”ë©´ ë°‘ ë²½ ì§€ì • 
 		avoid_bg[avoid_BG_Y-1][i] = 1;
 	}
 	avoid_bg[avoid_BG_Y-2][avoid_BG_X/2+1] = 5;
-	gotoxy(20, 2); printf("¢Ë¢Ë¢Ë¢Ë¢Ë¢Ë¢Ë¢Ë¢Ë¢Ë¢Ë¢Ë¢Ë¢Ë¢Ë");
 }
 
-int draw_avoid(){												// ÇÇÇÏ±â °ÔÀÓ Ãâ·Â 
+int draw_avoid(){												// í”¼í•˜ê¸° ê²Œìž„ ì¶œë ¥ 
 	for(int i = 0; i < avoid_BG_Y; i++){
 		for(int j = 0; j < avoid_BG_X; j++){
 			if(avoid_bg_cpy[i][j] != avoid_bg[i][j])
@@ -173,15 +175,15 @@ int draw_avoid(){												// ÇÇÇÏ±â °ÔÀÓ Ãâ·Â
 				gotoxy(j+2, i+2);
 				switch(avoid_bg[i][j]){
 					case 1:
-						printf("¢Ì");
+						printf("â–©");
 						break;
 					case -1:
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ±ÛÀÚ »¡°£»ö ÁöÁ¤ 
-						printf("¡å");
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ±ÛÀÚ ±âº»»ö ÁöÁ¤ 
+						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // ê¸€ìž ë¹¨ê°„ìƒ‰ ì§€ì • 
+						printf("â–¼");
+						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // ê¸€ìž ê¸°ë³¸ìƒ‰ ì§€ì • 
 						break;
 					case 5:
-						printf("¢Ã");
+						printf("â–£");
 						break;
 					default:
 						printf("  ");
@@ -195,15 +197,23 @@ int draw_avoid(){												// ÇÇÇÏ±â °ÔÀÓ Ãâ·Â
 			avoid_bg_cpy[i][j] = avoid_bg[i][j];
 		}
 	}
-	
+	gotoxy(20, 0); printf("â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦");
+    gotoxy(20, 1); printf("â–¦                          â–¦");
+    gotoxy(20, 2); printf("â–¦  YOUR SCORE : %10d â–¦", now_score);
+    gotoxy(20, 3); printf("â–¦                          â–¦");
+    gotoxy(20, 4); printf("â–¦  LAST SCORE : %10d â–¦", last_score);
+    gotoxy(20, 3); printf("â–¦                          â–¦");
+    gotoxy(20, 4); printf("â–¦  BEST SCORE : %10d â–¦", best_score);
+    gotoxy(20, 5); printf("â–¦                          â–¦");
+    gotoxy(20, 6); printf("â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦â–¦");
 }
 
 int avoid(){
-	SetConsoleTitle("ÇÇÇÏ±â °ÔÀÓ");			//ÄÜ¼Ö Á¦¸ñ º¯°æ
+	SetConsoleTitle("í”¼í•˜ê¸° ê²Œìž„");			//ì½˜ì†” ì œëª© ë³€ê²½
 	avoid_reset();
 	draw_avoid();
 	while(game == 2){
-		for(int a = 0; a < 3; a++){			// ºí·°ÀÌ ÇÑ¹ø ³»·Á¿Ã µ¿¾È ÃÑ 3¹ø Å°¸¦ ¹ÞÀ» ¼ö ÀÖÀ½ 
+		for(int a = 0; a < 3; a++){			// ë¸”ëŸ­ì´ í•œë²ˆ ë‚´ë ¤ì˜¬ ë™ì•ˆ ì´ 3ë²ˆ í‚¤ë¥¼ ë°›ì„ ìˆ˜ ìžˆìŒ 
 			avoid_key = 0;
 			avoid_key = game2_check_key();
 			player_move_avoid();
