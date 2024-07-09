@@ -19,5 +19,6 @@ int bullet_spawn();
 int bullet_fallen();
 int draw_avoid();
 int game2_check_key();
+int score_cal();
 int avoid_reset();
 int avoid_over();
