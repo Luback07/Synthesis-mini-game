@@ -1,13 +1,13 @@
 void CursorView()
 {
-    CONSOLE_CURSOR_INFO cursorInfo = { 0, };	// 커서 구조체 선언
-    cursorInfo.dwSize = 1; 			// 커서 굵기 (1 ~ 100)
-    cursorInfo.bVisible = FALSE; 		// 커서 Visible TRUE(보임) FALSE(숨김)
+    CONSOLE_CURSOR_INFO cursorInfo = { 0, };
+    cursorInfo.dwSize = 1; //커서 굵기 (1 ~ 100)
+    cursorInfo.bVisible = FALSE; //커서 Visible TRUE(보임) FALSE(숨김)
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
 
 void gotoxy(int x,int y) { //gotoxy함수 
-    COORD pos={2*x, y};				// 커서 위치 선언
+    COORD pos={x, y};
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
 }
 
@@ -68,10 +68,9 @@ int start(){
 " $$$$$$/  $$/   $$/ $$/      $$/ $$$$$$$$/        $$$$$$/  $$$$$$$$/ $$$$$$$$/ $$$$$$$$/  $$$$$$/     $$/    \n"
 "\n\n\n");		//출력  	
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 흰색 지정 
-	printf("> 틱택토 ");
+	printf("> Ticktacktoe ");
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // 글자 기본색 지정 
-	printf("- 피하기 게임 ");
-	printf("- ??? ");
+	printf("- Dodge ");
 	 while(game == 0)					//첫번째 화면일 때 실행 
 	 {	
 	 	if(kbhit()){
@@ -100,31 +99,21 @@ int start(){
 			{
 				game = -1;
 			}
-			if(g_s == 0) g_s = 3;
-			else if(g_s == 4) g_s = 1;
+			if(g_s == 0) g_s = 2;
+			else if(g_s == 3) g_s = 1;
 						
 		 	switch(g_s){
 		 		case ticktacktoe:
 	 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 흰색 지정 
-					printf("> 틱택토 ");
+					printf("> Ticktacktoe ");
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // 글자 기본색 지정 
-					printf("- 피하기 게임 ");
-					printf("- ??? ");
+					printf("- Dodge ");
 					break;
 				case avoidgame:
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // 글자 기본색 지정 
-					printf("- 틱택토 ");
+					printf("- Ticktacktoe ");
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 흰색 지정 
-					printf("> 피하기 게임 ");
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // 글자 기본색 지정 
-					printf("- ??? ");
-					break;
-				case secret: 
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // 글자 기본색 지정 
-					printf("- 틱택토 ");
-					printf("- 피하기 게임 ");
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 흰색 지정 
-					printf("> ??? ");
+					printf("> Dodge ");
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // 글자 기본색 지정 
 					break;
 				}
