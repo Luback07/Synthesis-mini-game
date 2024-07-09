@@ -376,7 +376,7 @@ int avoid(){
 	}
 	fscanf(file, "%d", &best_score);
 	fclose(file);
-	SetConsoleTitle("피하기 게임");			//콘솔 제목 변경
+	SetConsoleTitle("Dodge");			//콘솔 제목 변경
 	avoid_reset();
 	draw_avoid();
 	clock_t start = clock();
