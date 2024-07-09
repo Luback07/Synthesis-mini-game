@@ -1,7 +1,7 @@
 static int t_bg[4][4] = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};		//틱택토 게임판
 int sel, x, y, rx, ry;																	// sel는 플레이어 키 값 받는 변수 
 char ch;																				// 빈칸, O, X 출력 
-static int count = 0;																	//몇번 수를 뒀는지 확인 
+static int tick_count = 0;																	//몇번 수를 뒀는지 확인 
 static int game_end;
 
 int game1_check_key() {
@@ -88,7 +88,7 @@ int p_s_t(){							// player O 위치 선택
 				x = sel;
 				if(t_bg[y-1][x-1] == 0){
 					t_bg[y-1][x-1] = 1;
-					count += 1;
+					tick_count += 1;
 					if(loc > 0){
 						system("cls");
 					}
@@ -107,16 +107,39 @@ int p_s_t(){							// player O 위치 선택
 
 int r_s_t(){							// X설치 
 	while(game == 1){
-		if(count >= 9){
+		if(tick_count >= 9){
 			break;
 		}
 		rx = rand()%3;
 		ry = rand()%3;
 		if(t_bg[ry][rx] == 0){
 			t_bg[ry][rx] = 2;
-			count += 1;
+			tick_count += 1;
 			break;
 		}
+	}
+}
+
+int t_w_d(int t_result){
+	if( t_result == 1){
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // 글자 빨간색 지정 
+		gotoxy(6, 26); printf("  _____  _           __     ________ _____   __          _______ _   _ \n");
+		gotoxy(6, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  \\ \\        / /_   _| \\ | |\n");
+		gotoxy(6, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) |  \\ \\  /\\  / /  | | |  \\| |\n");
+		gotoxy(6, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /    \\ \\/  \\/ /   | | | . ` |\n");
+		gotoxy(6, 30); printf(" | |    | |____ / ____ \\| |  | |____| | \\ \\     \\  /\\  /   _| |_| |\\  |\n");
+		gotoxy(6, 31); printf(" |_|    |______/_/    \\_\\_|  |______|_|  \\_\\     \\/  \\/   |_____|_| \\_|\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 기본색 지정 
+	}
+	else if( t_result == -1){
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 13); // 글자 빨간색 지정 
+		gotoxy(6, 26); printf("  _____  _           __     ________ _____    _____  ______ ______ ______       _______ \n");
+		gotoxy(6, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  |  __ \\|  ____|  ____|  ____|   /\\|__   __|\n");
+		gotoxy(6, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) | | |  | | |__  | |__  | |__     /  \\  | |   \n");
+		gotoxy(6, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /  | |  | |  __| |  __| |  __|   / /\\ \\ | |   \n");
+		gotoxy(6, 30); printf(" | |    | |____ / ____ \\\| |  | |____| | \\ \\  | |__| | |____| |    | |____ / ____ \\| |   \n");
+		gotoxy(6, 31); printf(" |_|    |______/_/    \\_\\\_|  |______|_|  \\_\\ |_____/|______|_|    |______/_/    \\_\\_|   \n");
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 기본색 지정 
 	}
 }
 
@@ -129,30 +152,16 @@ int t_check(){							// 한 줄됬는지 확인
 			else{
 				if(i == 1){
 					if(t_bg[i][j] == 1){
-						count += 10;
+						tick_count += 10;
 						t_print();
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // 글자 빨간색 지정 
-						gotoxy(3, 26); printf("  _____  _           __     ________ _____   __          _______ _   _ \n");
-						gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  \\ \\        / /_   _| \\ | |\n");
-						gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) |  \\ \\  /\\  / /  | | |  \\| |\n");
-						gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /    \\ \\/  \\/ /   | | | . ` |\n");
-						gotoxy(3, 30); printf(" | |    | |____ / ____ \\| |  | |____| | \\ \\     \\  /\\  /   _| |_| |\\  |\n");
-						gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\_|  |______|_|  \\_\\     \\/  \\/   |_____|_| \\_|\n");
-             			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 기본색 지정 
+						t_w_d(1);
 						game_end = 1;
 						break;
 					}
 					else if(t_bg[i][j] == 2){
-						count += 10;
+						tick_count += 10;
 						t_print();
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 13); // 글자 빨간색 지정 
-						gotoxy(3, 26); printf("  _____  _           __     ________ _____    _____  ______ ______ ______       _______ \n");
-						gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  |  __ \\|  ____|  ____|  ____|   /\\|__   __|\n");
-						gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) | | |  | | |__  | |__  | |__     /  \\  | |   \n");
-						gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /  | |  | |  __| |  __| |  __|   / /\\ \\ | |   \n");
-						gotoxy(3, 30); printf(" | |    | |____ / ____ \\\| |  | |____| | \\ \\  | |__| | |____| |    | |____ / ____ \\| |   \n");
-						gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\\_|  |______|_|  \\_\\ |_____/|______|_|    |______/_/    \\_\\_|   \n");
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 기본색 지정 
+						t_w_d(-1);
 						game_end = 1;
 						break;
 					}
@@ -168,30 +177,16 @@ int t_check(){							// 한 줄됬는지 확인
 			else{
 				if(j == 1){
 					if(t_bg[i][j] == 1){
-						count += 10;
+						tick_count += 10;
 						t_print();
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // 글자 빨간색 지정 
-						gotoxy(3, 26); printf("  _____  _           __     ________ _____   __          _______ _   _ \n");
-						gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  \\ \\        / /_   _| \\ | |\n");
-						gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) |  \\ \\  /\\  / /  | | |  \\| |\n");
-						gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /    \\ \\/  \\/ /   | | | . ` |\n");
-						gotoxy(3, 30); printf(" | |    | |____ / ____ \\| |  | |____| | \\ \\     \\  /\\  /   _| |_| |\\  |\n");
-						gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\_|  |______|_|  \\_\\     \\/  \\/   |_____|_| \\_|\n");
-             			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 기본색 지정 
+						t_w_d(1);
 						game_end = 1;
 						break;
 					}
 					else if(t_bg[i][j] == 2){
-						count += 10;
+						tick_count += 10;
 						t_print();
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // 글자 빨간색 지정 
-						gotoxy(3, 26); printf("  _____  _           __     ________ _____    _____  ______ ______ ______       _______ \n");
-						gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  |  __ \\|  ____|  ____|  ____|   /\\|__   __|\n");
-						gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) | | |  | | |__  | |__  | |__     /  \\  | |   \n");
-						gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /  | |  | |  __| |  __| |  __|   / /\\ \\ | |   \n");
-						gotoxy(3, 30); printf(" | |    | |____ / ____ \\\| |  | |____| | \\ \\  | |__| | |____| |    | |____ / ____ \\| |   \n");
-						gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\\_|  |______|_|  \\_\\ |_____/|______|_|    |______/_/    \\_\\_|   \n");
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 기본색 지정 
+						t_w_d(-1);
 						game_end = 1;
 						break;
 					}
@@ -206,31 +201,17 @@ int t_check(){							// 한 줄됬는지 확인
 		else{
 			if(i == 1){
 				if(t_bg[i][i] == 1){
-					count += 10;
+					tick_count += 10;
 					t_print();
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // 글자 빨간색 지정 
-					gotoxy(3, 26); printf("  _____  _           __     ________ _____   __          _______ _   _ \n");
-					gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  \\ \\        / /_   _| \\ | |\n");
-					gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) |  \\ \\  /\\  / /  | | |  \\| |\n");
-					gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /    \\ \\/  \\/ /   | | | . ` |\n");
-					gotoxy(3, 30); printf(" | |    | |____ / ____ \\| |  | |____| | \\ \\     \\  /\\  /   _| |_| |\\  |\n");
-					gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\_|  |______|_|  \\_\\     \\/  \\/   |_____|_| \\_|\n");
-             		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 기본색 지정 
-					game_end = 10;
+					t_w_d(1);
+					game_end = 1;
 					break;
 				}
 				else if(t_bg[i][i] == 2){
-					count += 10;
+					tick_count += 10;
 					t_print();
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // 글자 빨간색 지정 
-					gotoxy(3, 26); printf("  _____  _           __     ________ _____    _____  ______ ______ ______       _______ \n");
-					gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  |  __ \\|  ____|  ____|  ____|   /\\|__   __|\n");
-					gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) | | |  | | |__  | |__  | |__     /  \\  | |   \n");
-					gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /  | |  | |  __| |  __| |  __|   / /\\ \\ | |   \n");
-					gotoxy(3, 30); printf(" | |    | |____ / ____ \\\| |  | |____| | \\ \\  | |__| | |____| |    | |____ / ____ \\| |   \n");
-					gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\\_|  |______|_|  \\_\\ |_____/|______|_|    |______/_/    \\_\\_|   \n");
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 기본색 지정 
-					game_end = 10;
+					t_w_d(-1);
+					game_end = 1;
 					break;
 				}
 			}
@@ -243,30 +224,16 @@ int t_check(){							// 한 줄됬는지 확인
 		else{
 			if(i == 1){
 				if(t_bg[2-i][i] == 1){
-					count += 10;
+					tick_count += 10;
 					t_print();
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // 글자 빨간색 지정 
-					gotoxy(3, 26); printf("  _____  _           __     ________ _____   __          _______ _   _ \n");
-					gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  \\ \\        / /_   _| \\ | |\n");
-					gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) |  \\ \\  /\\  / /  | | |  \\| |\n");
-					gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /    \\ \\/  \\/ /   | | | . ` |\n");
-					gotoxy(3, 30); printf(" | |    | |____ / ____ \\| |  | |____| | \\ \\     \\  /\\  /   _| |_| |\\  |\n");
-					gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\_|  |______|_|  \\_\\     \\/  \\/   |_____|_| \\_|\n");
-             		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 기본색 지정 
+					t_w_d(1);
 					game_end = 1;
 					break;
 				}
 				else if(t_bg[2-i][i] == 2){
-					count += 10;
+					tick_count += 10;
 					t_print();
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // 글자 빨간색 지정
-					gotoxy(3, 26); printf("  _____  _           __     ________ _____    _____  ______ ______ ______       _______ \n");
-					gotoxy(3, 27); printf(" |  __ \\| |        /\\\\ \\   / /  ____|  __ \\  |  __ \\|  ____|  ____|  ____|   /\\|__   __|\n");
-					gotoxy(3, 28); printf(" | |__) | |       /  \\\\ \\_/ /| |__  | |__) | | |  | | |__  | |__  | |__     /  \\  | |   \n");
-					gotoxy(3, 29); printf(" |  ___/| |      / /\\ \\\\   / |  __| |  _  /  | |  | |  __| |  __| |  __|   / /\\ \\ | |   \n");
-					gotoxy(3, 30); printf(" | |    | |____ / ____ \\\| |  | |____| | \\ \\  | |__| | |____| |    | |____ / ____ \\| |   \n");
-					gotoxy(3, 31); printf(" |_|    |______/_/    \\_\\\_|  |______|_|  \\_\\ |_____/|______|_|    |______/_/    \\_\\_|   \n");
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 기본색 지정 
+					t_w_d(-1);
 					game_end = 1;
 					break;
 				}
@@ -278,10 +245,10 @@ int t_check(){							// 한 줄됬는지 확인
 int t_print(){							// 틱택토 화면 출력 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 흰색 지정 
 	for(int i = 0; i < 4; i++){
-		gotoxy(3, 3+7*i); printf("▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩");
+		gotoxy(6, 3+7*i); printf("▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩ ▩");
 		if(i < 3){
 			for(int j = 1; j < 8; j++){
-				gotoxy(3, 3+7*i+j); printf("▩             ▩             ▩             ▩");
+				gotoxy(6, 3+7*i+j); printf("▩             ▩             ▩             ▩");
 			}
 		}
 	}
@@ -292,71 +259,71 @@ int t_print(){							// 틱택토 화면 출력
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8); // 글자 회색 지정
 				if(i == 0){
 					if(j == 0){
-						gotoxy(4, 5); printf("  ■ ■ ■ ■");
-						gotoxy(4, 6); printf("        ■");
-						gotoxy(4, 7); printf("        ■");
-						gotoxy(4, 8); printf("        ■");
-						gotoxy(4, 9); printf("        ■");
+						gotoxy(8, 5); printf("  ■ ■ ■ ■");
+						gotoxy(8, 6); printf("        ■");
+						gotoxy(8, 7); printf("        ■");
+						gotoxy(8, 8); printf("        ■");
+						gotoxy(8, 9); printf("        ■");
 					}
 					else if(j == 1){
-						gotoxy(11, 5); printf("  ■ ■ ■ ■");
-						gotoxy(11, 6); printf("  ■     ■");
-						gotoxy(11, 7); printf("  ■ ■ ■ ■");
-						gotoxy(11, 8); printf("  ■     ■");
-						gotoxy(11, 9); printf("  ■ ■ ■ ■");
+						gotoxy(22, 5); printf("  ■ ■ ■ ■");
+						gotoxy(22, 6); printf("  ■     ■");
+						gotoxy(22, 7); printf("  ■ ■ ■ ■");
+						gotoxy(22, 8); printf("  ■     ■");
+						gotoxy(22, 9); printf("  ■ ■ ■ ■");
 					}
 					else if(j == 2){
-						gotoxy(18, 5); printf("  ■ ■ ■ ■");
-						gotoxy(18, 6); printf("  ■     ■");
-						gotoxy(18, 7); printf("  ■ ■ ■ ■");
-						gotoxy(18, 8); printf("        ■");
-						gotoxy(18, 9); printf("        ■");
+						gotoxy(36, 5); printf("  ■ ■ ■ ■");
+						gotoxy(36, 6); printf("  ■     ■");
+						gotoxy(36, 7); printf("  ■ ■ ■ ■");
+						gotoxy(36, 8); printf("        ■");
+						gotoxy(36, 9); printf("        ■");
 					}
 				}
 				else if(i == 1){
 					if(j == 0){
-						gotoxy(4, 12); printf("        ■");
-						gotoxy(4, 13); printf("      ■ ■");
-						gotoxy(4, 14); printf("    ■   ■");
-						gotoxy(4, 15); printf("  ■ ■ ■ ■");
-						gotoxy(4, 16); printf("        ■");
+						gotoxy(8, 12); printf("        ■");
+						gotoxy(8, 13); printf("      ■ ■");
+						gotoxy(8, 14); printf("    ■   ■");
+						gotoxy(8, 15); printf("  ■ ■ ■ ■");
+						gotoxy(8, 16); printf("        ■");
 					}
 					else if(j == 1){
-						gotoxy(11, 12); printf("  ■ ■ ■ ■");
-						gotoxy(11, 13); printf("  ■");
-						gotoxy(11, 14); printf("  ■ ■ ■ ■");
-						gotoxy(11, 15); printf("        ■");
-						gotoxy(11, 16); printf("  ■ ■ ■ ■");
+						gotoxy(22, 12); printf("  ■ ■ ■ ■");
+						gotoxy(22, 13); printf("  ■");
+						gotoxy(22, 14); printf("  ■ ■ ■ ■");
+						gotoxy(22, 15); printf("        ■");
+						gotoxy(22, 16); printf("  ■ ■ ■ ■");
 					}
 					else if(j == 2){
-						gotoxy(18, 12); printf("  ■ ■ ■ ■");
-						gotoxy(18, 13); printf("  ■");
-						gotoxy(18, 14); printf("  ■ ■ ■ ■");
-						gotoxy(18, 15); printf("  ■     ■");
-						gotoxy(18, 16); printf("  ■ ■ ■ ■");
+						gotoxy(36, 12); printf("  ■ ■ ■ ■");
+						gotoxy(36, 13); printf("  ■");
+						gotoxy(36, 14); printf("  ■ ■ ■ ■");
+						gotoxy(36, 15); printf("  ■     ■");
+						gotoxy(36, 16); printf("  ■ ■ ■ ■");
 					}
 				}
 				else if(i == 2){
 					if(j == 0){
-						gotoxy(4, 19); printf("      ■");
-						gotoxy(4, 20); printf("    ■ ■");
-						gotoxy(4, 21); printf("      ■");
-						gotoxy(4, 22); printf("      ■");
-						gotoxy(4, 23); printf("   ■ ■ ■");
+						gotoxy(8, 19); printf("      ■");
+						gotoxy(8, 20); printf("    ■ ■");
+						gotoxy(8, 21); printf("      ■");
+						gotoxy(8, 22); printf("      ■");
+						gotoxy(8, 23); printf("   ■ ■ ■");
 					}
 					else if(j == 1){
-						gotoxy(11, 19); printf("  ■ ■ ■ ■");
-						gotoxy(11, 20); printf("        ■");
-						gotoxy(11, 21); printf("  ■ ■ ■ ■");
-						gotoxy(11, 22); printf("  ■");
-						gotoxy(11, 23); printf("  ■ ■ ■ ■");
+						gotoxy(22, 19); printf("  ■ ■ ■ ■");
+						gotoxy(22, 20); printf("        ■");
+						gotoxy(22, 21); printf("  ■ ■ ■ ■");
+						gotoxy(22, 22); printf("  ■");
+						gotoxy(22, 23); printf("  ■ ■ ■ ■");
 					}
 					else if(j == 2){
-						gotoxy(18, 19); printf("  ■ ■ ■ ■");
-						gotoxy(18, 20); printf("        ■");
-						gotoxy(18, 21); printf("  ■ ■ ■ ■");
-						gotoxy(18, 22); printf("        ■");
-						gotoxy(18, 23); printf("  ■ ■ ■ ■");
+						gotoxy(36, 19); printf("  ■ ■ ■ ■");
+						gotoxy(36, 20); printf("        ■");
+						gotoxy(36, 21); printf("  ■ ■ ■ ■");
+						gotoxy(36, 22); printf("        ■");
+						gotoxy(36, 23); printf("  ■ ■ ■ ■");
 					}
 				}
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 흰색 지정
@@ -364,28 +331,31 @@ int t_print(){							// 틱택토 화면 출력
 			else if(t_bg[i][j] == 1)
 			{
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // 글자 연두색 지정 
-				gotoxy(4+7*j, 4+7*i); printf("  ■ ■ ■ ■");
-				gotoxy(4+7*j, 4+7*i+1); printf("■         ■");
-				gotoxy(4+7*j, 4+7*i+2); printf("■         ■");
-				gotoxy(4+7*j, 4+7*i+3); printf("■         ■");
-				gotoxy(4+7*j, 4+7*i+4); printf("■         ■");
-				gotoxy(4+7*j, 4+7*i+5); printf("  ■ ■ ■ ■");
+				gotoxy((4+7*j)*2, 4+7*i); printf("  ■ ■ ■ ■");
+				gotoxy((4+7*j)*2, 4+7*i+1); printf("■         ■");
+				gotoxy((4+7*j)*2, 4+7*i+2); printf("■         ■");
+				gotoxy((4+7*j)*2, 4+7*i+3); printf("■         ■");
+				gotoxy((4+7*j)*2, 4+7*i+4); printf("■         ■");
+				gotoxy((4+7*j)*2, 4+7*i+5); printf("  ■ ■ ■ ■");
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 흰색 지정 
 			}
 			else if(t_bg[i][j] == 2)
 			{
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4); // 글자 노란색 지정 
-				gotoxy(4+7*j, 4+7*i); printf("■         ■");
-				gotoxy(4+7*j, 4+7*i+1); printf("  ■     ■");
-				gotoxy(4+7*j, 4+7*i+2); printf("    ■ ■");
-				gotoxy(4+7*j, 4+7*i+3); printf("    ■ ■");
-				gotoxy(4+7*j, 4+7*i+4); printf("  ■     ■");
-				gotoxy(4+7*j, 4+7*i+5); printf("■         ■");
+				gotoxy((4+7*j)*2, 4+7*i); printf("■         ■");
+				gotoxy((4+7*j)*2, 4+7*i+1); printf("  ■     ■");
+				gotoxy((4+7*j)*2, 4+7*i+2); printf("    ■ ■");
+				gotoxy((4+7*j)*2, 4+7*i+3); printf("    ■ ■");
+				gotoxy((4+7*j)*2, 4+7*i+4); printf("  ■     ■");
+				gotoxy((4+7*j)*2, 4+7*i+5); printf("■         ■");
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // 글자 흰색 지정 
 			}
 		}
 	}
-	if(count == 9){
+	gotoxy(60, 8); printf("Number Pad : O 설치");
+	gotoxy(60, 10); printf("ESC : 메인화면으로 돌아가기");
+	gotoxy(60, 12); printf("R : 재시작");
+	if(tick_count == 9){
 		printf("무승부임 님 바보임?");
 	}
 }
@@ -393,7 +363,7 @@ int t_print(){							// 틱택토 화면 출력
 int ttt(){
 	SetConsoleTitle("틱택토");			//콘솔 제목 변경
 	system("cls");
-	count = 0;
+	tick_count = 0;
 	game_end = 0;
 	for(int i = 0; i < 4; i++)
 	{
